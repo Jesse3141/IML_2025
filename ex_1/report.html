@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>part 2&colon; scenarios&colon;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="part-2-scenarios">part 2: scenarios:</h1>
+<h2 id="scenario-1-two-prophets-one-game">SCENARIO 1: Two Prophets, One Game</h2>
+<pre><code>  Average test error:        0.3067
+  Approximation error:       0.2000
+  Estimation error:          0.0940
+  Best prophet chosen:       53/100 times
+</code></pre>
+<h2 id="scenario-2-two-prophets-ten-games">SCENARIO 2: Two Prophets, Ten Games</h2>
+<pre><code>Average test error:        0.2213
+Approximation error:       0.2000
+Estimation error:          0.0240
+Best prophet chosen:       88/100 times
+</code></pre>
+<h2 id="scenario-3-many-prophets-ten-games">SCENARIO 3: Many Prophets, Ten Games</h2>
+<pre><code>Average test error:        0.0930
+Approximation error:       0.0064
+Estimation error:          0.0852
+Best prophet chosen:       3/100 times
+Within 1% of best:         8/100 times
+</code></pre>
+<p>analysis: if the error rates were uniformly distributed between [0, 0.5] instead of [0, 1], the <strong>approximation error would stay largely the same</strong>, since we have haven't changes the lower bound on True risk. meanwhile, the <strong>estimation error would be substantially smaller</strong>, since even when we select a model whose true risk is greater than that of the best available model, the true risk of the chosen model will be closer to 0.</p>
+<h2 id="scenario-4-many-prophets-many-games">SCENARIO 4: Many Prophets, Many Games</h2>
+<pre><code>Average test error:        0.0064
+Approximation error:       0.0064
+Estimation error:          0.0008
+Best prophet chosen:       50/100 times
+Within 1% of best:         98/100 times
+</code></pre>
+<p>analysis:
+if we evaluate the genralisation gap of a model based on the train set, we expect it to be <strong>greater</strong> than if we had masured generalisation gap based on the model's perfomrnace on the test. that is becuase the train set is a relatively small subset compared to the poplation and the model selection was biased in favor of a model performing well on the train set. no such bias affects the performance on the test set, and hence the test set provides a better approxiamtion of the gnerealisation gap.</p>
+<h2 id="scenario-5-school-of-prophets">SCENARIO 5: School of Prophets</h2>
+<pre><code>Grid search completed
+  k values (prophets):     [2, 5, 10, 50]
+  m values (train games):  [1, 10, 50, 1000]
+  Number of trials:        100
+</code></pre>
+<p><img src="file:///c:\Users\Jesse\Google Drive\Learning\Medicine\MdPhD\Y1S1\IML\excercises\ex_1\scenario_5_results.png" alt="alt text">
+the grid search shows clear patterns:
+as we increase <strong>k</strong> (class size) we increase two facotrs:</p>
+<ol>
+<li>the chance of the available prophets including a prothet with a lower true risk, thus <strong>decreasing approxiamtion error</strong>` indeed k is almost entirely responsible for the approxiamtion error.</li>
+<li>increasing the chance of including a prophet that happened to perform well on the trian set, while having a greater true risk, thus <strong>increasing estiamton error and test error</strong>.
+meanwhile, increasing <strong>m</strong> (the training set size) makes it harder for a model to perform well on the train set despite having a higher true risk thus, it <strong>decreases the estimation error and the test error</strong>.</li>
+</ol>
+<p>indeed, we see that when we increased the number of games for ERM from scenario 1 to 2, we lowered the estimation and test error as expected.</p>
+<p>furthermore, scenarios 3 and 4 exactly show how the approxiamtion error is affected primarily by k, while incresing m led to lower test and estiamtion errors.</p>
+<h2 id="scenario-6-bias-complexity-tradeoff">SCENARIO 6: Bias-Complexity Tradeoff</h2>
+<pre><code>Hypothesis 1 (5 prophets, high bias):
+  Average test error:      0.3570
+  Approximation error:     0.3230
+  Estimation error:        0.0306
+
+Hypothesis 2 (500 prophets, low bias):
+  Average test error:      0.3044
+  Approximation error:     0.2500
+  Estimation error:        0.0545
+</code></pre>
+<p><img src="file:///c:\Users\Jesse\Google Drive\Learning\Medicine\MdPhD\Y1S1\IML\excercises\ex_1\scenario_6_histograms.png" alt="alt text">
+we see that while class 2 has models sampled from a 'better' range of true risk (lower bound 0.25 as opposed to 0.3), the estiamtion error is higher. this is as expected, since given a larger calss size there is a greater likelihood of choosing a sample with low error on the train set despite higher true risk. meanwhile, the fact that the models in calss 2 on average have lower true risk, leads to a lower test error.</p>
+<h1 id="part-3-pac-learning-analyis">part 3: pac learning analyis:</h1>
+<p>in this part we use the formula relating the number of samples to accuracy and cofidence:
+<code>m = 2 * np.log(2 * h / delta) / epsilon</code>,
+which can also be expressed as:
+<code>m = (2 / epsilon) * (np.log(2)+np.log(h)-np.log(delta))</code>
+we note that m is inversely proportional to epsilon and to the log of delta.
+it is proportional to the log of h.</p>
+<h2 id="question-1-compute-minimal-number-of-samples">QUESTION 1: Compute minimal number of samples</h2>
+<pre><code>Input Parameters:
+  |H| (hypothesis class size) = 100
+  epsilon (desired accuracy)  = 0.05
+  delta (confidence level)    = 0.01
+</code></pre>
+<p><code>Output:  m (rounded up)               = 397</code></p>
+<h2 id="question-2-analyze-change-when-h-is-doubled">QUESTION 2: Analyze change when |H| is doubled</h2>
+<pre><code>Input Parameters:
+  |H| (hypothesis class size) = 200 (doubled)
+</code></pre>
+<p><code>Output:  m (rounded up)               = 424</code></p>
+<p>we see that if we double |H| we only need an additional 27 samples. if we refactor the equation we get `m = orignial_val + (2 / epsilon) * np.log(2)' which comes to 27</p>
+<h2 id="question-3-plot-m-as-a-function-of-epsilon-in-001-02">QUESTION 3: Plot m as a function of epsilon in [0.01, 0.2]</h2>
+<p><img src="file:///c:\Users\Jesse\Google Drive\Learning\Medicine\MdPhD\Y1S1\IML\excercises\ex_1\image.png" alt="alt text"></p>
+<p>we clearly see m increase in inverse proportion to epsilon. hence, to halve the error, we need to double the number of samples.</p>
+<h2 id="question-4-plot-m-as-a-function-of-delta-in-10-4-01-log-scale">QUESTION 4: Plot m as a function of delta in [10^-4, 0.1] (log scale)</h2>
+<p><img src="file:///c:\Users\Jesse\Google Drive\Learning\Medicine\MdPhD\Y1S1\IML\excercises\ex_1\image-1.png" alt="alt text"></p>
+<p>we clearly see that curve follows an exact logarimic scale. hence, to increase the confidence 10 fold, we need only increase the numerator by a factor of log(10), making this scale well.</p>
+
+            
+            
+        </body>
+        </html>
