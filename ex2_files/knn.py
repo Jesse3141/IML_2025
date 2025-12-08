@@ -2,6 +2,7 @@
 import numpy as np
 import faiss
 
+np.random.seed(0)
 class KNNClassifier:
     def __init__(self, k, distance_metric='l2'):
         self.k = k
@@ -39,7 +40,10 @@ class KNNClassifier:
         Returns:
         - (numpy array) of size (M,): Predicted class labels.
         """
-        #### YOUR CODE GOES HERE ####
+        X = X.astype(np.float32)
+        distances, indices = self.index.search(X, self.k)
+        neighbor_labels = self.Y_train[indices]
+        return np.array([np.bincount(row.astype(int)).argmax() for row in neighbor_labels])
 
     def knn_distance(self, X):
         """
@@ -54,4 +58,5 @@ class KNNClassifier:
         - (numpy array) of size (M, k): Indices of kNNs.
         """
         X = X.astype(np.float32)
-	#### YOUR CODE GOES HERE ####
+        return self.index.search(X, self.k)[0]
+
