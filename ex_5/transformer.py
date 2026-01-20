@@ -215,7 +215,8 @@ def train_model(
     history = {
         'train_loss': [], 'test_loss': [],
         'train_acc': [], 'test_acc': [],
-        'generated_sentences': []
+        'generated_sentences': [],
+        'generated_sentences_tpk': []
     }
 
     data_handler = DataHandler(train_path, test_path, block_size)
@@ -291,12 +292,16 @@ def train_model(
         # Text generation (standard sampling)
         prompt = "the "
         epoch_sentences = []
+        epoch_sentences_top_k = []
         for _ in range(3):
             sent = generate_text(model, data_handler, prompt, 30, block_size, device)
+            tpk = generate_text(model, data_handler, prompt, 30, block_size, device,5)
             epoch_sentences.append(sent)
+            epoch_sentences_top_k.append(tpk)
             if verbose:
-                print(f'  Generated: {sent}')
+                print(f'  Generated: {sent} \n, and with top k {tpk}')
         history['generated_sentences'].append((ep + 1, epoch_sentences))
+        history['generated_sentences_tpk'].append((ep + 1, epoch_sentences_top_k))
 
     if return_history:
         return model, data_handler, history
