@@ -6,7 +6,6 @@ from torch.utils.data.dataloader import DataLoader
 from tqdm import tqdm
 from dataset import DataHandler
 
-
 class NewGELU(nn.Module):
     """
     Implementation of the GELU activation function currently in Google BERT repo (identical to OpenAI GPT).
@@ -48,15 +47,19 @@ class CausalSelfAttention(nn.Module):
         q, k, v = qkv.split(self.n_embd, dim=2)
 
         # Reshape for multi-head: (B, T, C) -> (B, n_head, T, head_dim)
+        # split C dim into n heads, then transpose head and token - head dim outside matmul!
         q = q.view(B, T, self.n_head, self.head_dim).transpose(1, 2)
         k = k.view(B, T, self.n_head, self.head_dim).transpose(1, 2)
         v = v.view(B, T, self.n_head, self.head_dim).transpose(1, 2)
 
-        # Scaled dot-product attention: (Q @ K.T) / sqrt(d_k)
+        # Scaled dot-product attention: (Q @ K.T) / sqrt(d_k).
+        # note, K.T only on last two dims.
         att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(self.head_dim))
 
         # Apply causal mask (prevent attending to future tokens)
         att = att.masked_fill(self.mask[:, :, :T, :T] == 0, float('-inf'))
+        
+
 
         # Softmax and weighted sum with values
         att = torch.nn.functional.softmax(att, dim=-1)
